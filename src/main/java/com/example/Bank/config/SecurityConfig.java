@@ -29,7 +29,7 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         // frameOptions 설정을 새롭게 적용
-        http.headers(headers -> headers.frameOptions(frameOptions -> frameOptions.disable());
+        http.headers(headers -> headers.frameOptions(frameOptions -> frameOptions.disable()));
 
         // CSRF 설정 비활성화
         http.csrf(AbstractHttpConfigurer::disable);
