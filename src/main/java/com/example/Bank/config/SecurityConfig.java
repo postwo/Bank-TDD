@@ -28,6 +28,8 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        log.debug("디버그: filterChain 빈 등록됨");
+
         // frameOptions 설정을 새롭게 적용
         http.headers(headers -> headers.frameOptions(frameOptions -> frameOptions.disable()));
 
@@ -57,6 +59,8 @@ public class SecurityConfig {
 
     @Bean
     public CorsConfigurationSource configurationSource() {
+        log.debug("디버그 : configurationSource cors 설정이 SecurityFilterChain에 등록됨");
+
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.addAllowedHeader("*");
         configuration.addAllowedMethod("*"); // 모든 HTTP 메서드 허용 (GET, POST, PUT, DELETE)
