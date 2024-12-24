@@ -1,6 +1,7 @@
 package com.example.Bank.config;
 
 import com.example.Bank.domain.user.UserEnum;
+import jakarta.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Bean;
@@ -45,6 +46,16 @@ public class SecurityConfig {
         // React 및 앱에서 요청할 예정이므로 formLogin과 httpBasic 비활성화
         http.formLogin(AbstractHttpConfigurer::disable);
         http.httpBasic(AbstractHttpConfigurer::disable);
+
+        // Exception 가로채기
+       http.exceptionHandling(exceptionHandling ->
+                exceptionHandling.authenticationEntryPoint((request, response, authException) -> {
+//                    response.setContentType("application/json; charset=utf-8");
+                    response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+                    response.getWriter().println("error"); //포스트맨 or 웹 으로 localhost:8081/api/s/hello 이 경로를 찍어보면 error가 찍힌다.
+                })
+
+        );
 
         // https://docs.spring.io/spring-security/reference/servlet/authorization/authorize-http-requests.html
         // 권한 및 인증 설정
