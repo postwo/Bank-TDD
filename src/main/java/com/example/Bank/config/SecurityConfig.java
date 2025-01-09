@@ -1,7 +1,7 @@
 package com.example.Bank.config;
 
 import com.example.Bank.domain.user.UserEnum;
-import jakarta.servlet.http.HttpServletResponse;
+import com.example.Bank.util.CustomResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Bean;
@@ -50,9 +50,15 @@ public class SecurityConfig {
         // Exception 가로채기
        http.exceptionHandling(exceptionHandling ->
                 exceptionHandling.authenticationEntryPoint((request, response, authException) -> {
-//                    response.setContentType("application/json; charset=utf-8");
-                    response.setStatus(HttpServletResponse.SC_FORBIDDEN);
-                    response.getWriter().println("error"); //포스트맨 or 웹 으로 localhost:8081/api/s/hello 이 경로를 찍어보면 error가 찍힌다.
+//                    String uri = request.getRequestURI();
+//                    log.debug("디버그 :"+ uri);
+//                    if(uri.contains("admin")){
+//                        CustomResponseUtil.unAuthorization(response,"관리자로 로그인을 진행해 주세요");
+//                    }else{
+//                        CustomResponseUtil.unAuthentication(response,"로그인을 진행해 주세요");
+//                    }
+
+                    CustomResponseUtil.unAuthentication(response,"로그인을 진행해 주세요");
                 })
 
         );
