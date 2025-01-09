@@ -50,14 +50,6 @@ public class SecurityConfig {
         // Exception 가로채기
        http.exceptionHandling(exceptionHandling ->
                 exceptionHandling.authenticationEntryPoint((request, response, authException) -> {
-//                    String uri = request.getRequestURI();
-//                    log.debug("디버그 :"+ uri);
-//                    if(uri.contains("admin")){
-//                        CustomResponseUtil.unAuthorization(response,"관리자로 로그인을 진행해 주세요");
-//                    }else{
-//                        CustomResponseUtil.unAuthentication(response,"로그인을 진행해 주세요");
-//                    }
-
                     CustomResponseUtil.unAuthentication(response,"로그인을 진행해 주세요");
                 })
 
