@@ -7,6 +7,7 @@ import com.example.Bank.handler.ex.CustomApiException;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -39,6 +40,7 @@ public class UserService {
         return new JoinRespDto(userPS);
     }
 
+    @ToString
     @Setter
     @Getter
     public static class JoinRespDto {
