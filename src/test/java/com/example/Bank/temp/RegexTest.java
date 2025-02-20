@@ -53,4 +53,29 @@ public class RegexTest {
         Boolean result = Pattern.matches("^[a-zA-Z]{2,4}$",value);
         System.out.println("테스트 :"+result);
     }
+
+    //username, email , fullname
+
+    @Test
+    public void user_username_test() throws Exception {
+        String username = "가";
+        boolean result = Pattern.matches("^[a-zA-Z0-9]{2,20}$",username); //영문/숫자 2~20자 이내
+        System.out.println("테스트 :"+result);
+    }
+
+    @Test
+    public void user_fullname_test() throws Exception {
+        String fullname = "쌀asdfsadf";
+        boolean result = Pattern.matches("^[a-zA-Z가-힣]{1,20}$",fullname); // 영어 한글 1~20
+        System.out.println("테스트 :"+result);
+    }
+
+    @Test
+    public void user_email_test() throws Exception { // (.) 을 사용할려면 \\두개를 붙여서 사용해야한다
+        String email = "ss@nate.com";
+        boolean result = Pattern.matches("^[a-zA-Z0-9]{2,6}@[a-zA-Z0-9]{2,6}\\.[a-zA-Z]{2,3}$",email); //이메일 형식
+        System.out.println("테스트 :"+result);
+    }
+
+
 }
