@@ -1,10 +1,10 @@
 package com.example.Bank.Service;
 
-import com.example.Bank.Service.UserService.JoinReqDto;
-import com.example.Bank.Service.UserService.JoinRespDto;
+import com.example.Bank.config.dummy.DummyObject;
 import com.example.Bank.domain.user.User;
-import com.example.Bank.domain.user.UserEnum;
 import com.example.Bank.domain.user.UserRepository;
+import com.example.Bank.dto.user.UserReqDto;
+import com.example.Bank.dto.user.UserRespDto;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -13,7 +13,6 @@ import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
-import java.time.LocalDateTime;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -22,7 +21,7 @@ import static org.mockito.Mockito.when;
 
 // spring 관련 bean들이 하나도 없는 환경
 @ExtendWith(MockitoExtension.class)
-public class UserServiceTest {
+public class UserServiceTest extends DummyObject {
 
     @InjectMocks //가짜 환경을 만드는거다
     private UserService userService;
@@ -36,7 +35,7 @@ public class UserServiceTest {
      @Test
       public void 회원가입_test() throws Exception {
          // given 은 매개변수를 뜻한다
-         JoinReqDto joinReqDto = new JoinReqDto();
+         UserReqDto.JoinReqDto joinReqDto = new UserReqDto.JoinReqDto(); //UserReqDto.JoinReqDto가 이렇게 임포트되는 이유는 UserReqDto 클래스 안에 JoinReqDto라는 이너 클래스로 정의되어 있기 때문
          joinReqDto.setUsername("ssar");
          joinReqDto.setPassword("1234");
          joinReqDto.setEmail("ssar@nate.com");
@@ -46,21 +45,12 @@ public class UserServiceTest {
          when(userRepository.findByUsername(any())).thenReturn(Optional.empty());
          //when(userRepository.findByUsername(any())).thenReturn(Optional.of(new User())); //이거는 user라는 값이 있는것이다. 이렇게 하면 커스텀 exception이 터진다
 
-         // stub1 여기는 ssar이 리턴된다.
-         User ssar = User.builder()
-                         .id(1L)
-                         .username("ssar")
-                         .password("1234")
-                         .email("ssar@nate.com")
-                         .fullname("쌀")
-                         .role(UserEnum.CUSTOMER)
-                         .createdAt(LocalDateTime.now())
-                         .updatedAt(LocalDateTime.now())
-                         .build();
+         // stub2 여기는 ssar이 리턴된다.
+         User ssar = newMockUser(1L,"ssar","쌀");
          when(userRepository.save(any())).thenReturn(ssar);
 
          // when 회원가입 실행
-         JoinRespDto joinRespDto = userService.회원가입(joinReqDto);
+         UserRespDto.JoinRespDto joinRespDto = userService.회원가입(joinReqDto);
          System.out.println("테스트 :"+joinRespDto);
 
          // then 검증
