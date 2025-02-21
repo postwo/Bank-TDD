@@ -37,6 +37,8 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response)
             throws AuthenticationException {
+        log.debug("디버그 : JwtAuthenticationFilter attemptAuthentication()");
+
         try {
             ObjectMapper om = new ObjectMapper(); // Java 객체를 JSON으로 변환하거나 JSON을 Java 객체로 변환
             UserReqDto.LoginReqDto loginReqDto = om.readValue(request.getInputStream(), UserReqDto.LoginReqDto.class);
@@ -65,6 +67,8 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     @Override
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain,
                                             Authentication authResult) throws IOException, ServletException {
+        log.debug("디버그 : JwtAuthenticationFilter successfulAuthentication()"); // 예가 호출이 되었다는거는 로그인이 되었다는의미이다 세션이 만들어졌다
+
         // 1. 세션에 있는 UserDetails 가져오기
         LoginUser loginUser = (LoginUser) authResult.getPrincipal();
 

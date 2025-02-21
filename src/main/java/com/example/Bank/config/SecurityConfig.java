@@ -1,11 +1,13 @@
 package com.example.Bank.config;
 
+import com.example.Bank.config.jwt.JwtAuthenticationFilter;
 import com.example.Bank.domain.user.UserEnum;
 import com.example.Bank.util.CustomResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -27,6 +29,21 @@ public class SecurityConfig {
         return new BCryptPasswordEncoder();
     }
 
+    // 모든 필터 등록은 여기서!! (AuthenticationManager 순환 의존 문제로 내부 클래스로 만들어진 듯, 추측임)
+    public class CustomSecurityFilterManager extends AbstractHttpConfigurer<CustomSecurityFilterManager, HttpSecurity> {
+        @Override
+        public void configure(HttpSecurity builder) throws Exception {
+            // log.debug("디버그 : SecurityConfig의 configure");
+            AuthenticationManager authenticationManager = builder.getSharedObject(AuthenticationManager.class);
+            builder.addFilter(new JwtAuthenticationFilter(authenticationManager));
+            super.configure(builder);
+        }
+
+        public HttpSecurity build(){
+            return getBuilder();
+        }
+    }
+
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         log.debug("디버그: filterChain 빈 등록됨");
@@ -46,6 +63,9 @@ public class SecurityConfig {
         // React 및 앱에서 요청할 예정이므로 formLogin과 httpBasic 비활성화
         http.formLogin(AbstractHttpConfigurer::disable);
         http.httpBasic(AbstractHttpConfigurer::disable);
+
+        // 필터 적용
+        http.with(new CustomSecurityFilterManager(), c-> c.build());
 
         // Exception 가로채기
        http.exceptionHandling(exceptionHandling ->
