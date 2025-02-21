@@ -40,7 +40,7 @@ public class SecurityConfig {
         // CORS 설정
         http.cors(cors -> cors.configurationSource(configurationSource()));
 
-        // jSessionId를 서버에서 관리하지 않음
+        // jSessionId를 서버에서 관리하지 않하겠다는 뜻
         http.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 
         // React 및 앱에서 요청할 예정이므로 formLogin과 httpBasic 비활성화
