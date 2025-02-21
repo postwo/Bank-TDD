@@ -11,6 +11,13 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 public class UserReqDto {
 
+    @Getter
+    @Setter
+    public static class LoginReqDto {
+        private String username;
+        private String password;
+    }
+
     @Setter
     @Getter
     public static class JoinReqDto{
