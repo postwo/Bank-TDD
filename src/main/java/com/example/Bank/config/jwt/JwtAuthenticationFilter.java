@@ -55,12 +55,16 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 
             return authentication;
         } catch (Exception e) {
-            /*
-             * InternalAuthenticationServiceException 해당 Exception으로 보내야
-             * authenticationEntryPoint()에 걸려서 처리됨.
-             */
+            // unsuccessfulAuthentication 호출함
             throw new InternalAuthenticationServiceException(e.getMessage());
         }
+    }
+
+    // 로그인 실패
+    @Override
+    protected void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response,
+                                              AuthenticationException failed) throws IOException, ServletException {
+        CustomResponseUtil.unAuthentication(response, "로그인실패");
     }
 
     //return authentication 잘 작도동하면 successfulAuthentication 메서드 호출 된다
